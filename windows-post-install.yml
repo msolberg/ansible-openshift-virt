@@ -28,8 +28,8 @@
       retries: 60
       delay: 10
       until:
-      - deploy_collection_vm.resources[0].status is defined
-      - deploy_collection_vm.resources[0].status.running is false
+      - deploy_collection_vm.resources[0].status.printableStatus is defined
+      - deploy_collection_vm.resources[0].status.printableStatus == "Stopped"
 
     - name: "Set running to true"
       ansible.builtin.set_fact:
