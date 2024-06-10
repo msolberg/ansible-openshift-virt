@@ -1,0 +1,43 @@
+---
+- name: "Remove CD from Windows VM"
+  hosts: all
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: "New VirtualMachine Definition without CD"
+      kubernetes.core.k8s:
+        state: present
+        template: virtualmachine.yml.j2
+    
+    - name: "Set running to false"
+      ansible.builtin.set_fact:
+        vm_running: false
+    
+    - name: "Stop VM"
+      kubernetes.core.k8s:
+        state: present
+        template: virtualmachine.yml.j2
+    
+    - name: Wait for VM to down
+      kubernetes.core.k8s_info:
+        api_version: kubevirt.io/v1
+        kind: VirtualMachine
+        name: "{{ vm_name }}"
+        namespace: "{{ vm_namespace }}"
+      register: deploy_collection_vm
+      retries: 60
+      delay: 10
+      until:
+      - deploy_collection_vm.resources[0].status is defined
+      - deploy_collection_vm.resources[0].status.running is false
+
+    - name: "Set running to true"
+      ansible.builtin.set_fact:
+        vm_running: true
+    
+    - name: "Start VM"
+      kubernetes.core.k8s:
+        state: present
+        vm_running: true
+        template: virtualmachine-installed.yml.j2
+
