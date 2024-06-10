@@ -1,12 +1,12 @@
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: win2k19-03
-  namespace: default
+  name: {{ vm_name }}
+  namespace: {{ vm_namespace }}
   finalizers:
     - kubevirt.io/virtualMachineControllerFinalize
   labels:
-    app: win2k19-03
+    app: {{ vm_name }}
     vm.kubevirt.io/template: windows2k19-server-medium
     vm.kubevirt.io/template.namespace: openshift
     vm.kubevirt.io/template.revision: '1'
@@ -17,7 +17,7 @@ spec:
       kind: DataVolume
       metadata:
         creationTimestamp: null
-        name: win2k19-03
+        name: {{ vm_name }}
       spec:
         source:
           pvc:
@@ -36,7 +36,7 @@ spec:
         vm.kubevirt.io/workload: server
       creationTimestamp: null
       labels:
-        kubevirt.io/domain: win2k19-03
+        kubevirt.io/domain: {{ vm_name }}
         kubevirt.io/size: medium
     spec:
       architecture: amd64
@@ -101,7 +101,7 @@ spec:
       terminationGracePeriodSeconds: 3600
       volumes:
         - dataVolume:
-            name: win2k19-03
+            name: {{ vm_name }}
           name: rootdisk
         - containerDisk:
             image: 'registry.redhat.io/container-native-virtualization/virtio-win-rhel9@sha256:077e155806a3541ef2d6c0ea3bf87bc7491a51cb1197be4991cf0da13eadefab'

@@ -1,12 +1,12 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: {{ name }}
-  namespace: {{ namespace }}
+  name: {{ vm_name }}
+  namespace: {{ vm_namespace }}
 spec:
   to:
     kind: Service
-    name: {{ name }}
+    name: {{ vm_name }}
     weight: 100
   port:
     targetPort: 80
