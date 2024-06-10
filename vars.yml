@@ -1,4 +1,5 @@
 ---
 vm_namespace: "default"
 vm_name: "win2k19-02"
+vm_running: true
 macAddress: '02:2c:5a:00:00:00'
