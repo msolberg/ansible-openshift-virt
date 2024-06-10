@@ -38,6 +38,5 @@
     - name: "Start VM"
       kubernetes.core.k8s:
         state: present
-        vm_running: true
         template: virtualmachine-installed.yml.j2
 
